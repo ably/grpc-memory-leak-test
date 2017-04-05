@@ -7,7 +7,7 @@
  *  or the process exists with a SEGFAULT such as "assertion failed: pthread_mutex_lock(mu) == 0"
  **/
 
-const RepeatCount = 100000;
+const RepeatCount = 200000;
 const BatchSize = 250;
 const ExampleProtoPath = process.env.GRPC_FOLDER + '/examples/protos/helloworld.proto';
 
@@ -41,7 +41,7 @@ function runClientTestBatch(totalCompleted, done) {
       if (completed === BatchSize) {
         let mem = process.memoryUsage();
         console.log(`Iteration ${totalCompleted + completed}. rss ${mem.rss} heap ${mem.heapTotal}`);
-        if (mem.rss >= mem.heapTotal * 2.5) {
+        if (mem.rss >= mem.heapTotal * 3) {
           console.error('Memory leak detected');
           server.forceShutdown();
           process.exit(1);
@@ -58,10 +58,11 @@ function runClientTests() {
     runClientTestBatch(completed, function() {
       completed += BatchSize;
       if (completed >= RepeatCount) {
+        console.info('gPRC test succeeded');
         server.forceShutdown();
         process.exit();
       } else {
-        nextBatch();
+        setTimeout(nextBatch, 5);
       }
     });
   }
