@@ -17,7 +17,7 @@ Ensure this repo and the gRPC repo share the same parent folders (i.e. they are 
 ### 3. Run the tests
 
 Find a good commit. For example, `v1.1.0` is a known good commit, however you want to use the most recently known good commit.
-Then find the failing commit SHA, for example you may just use `master`.
+Then find the failing commit SHA, for example you may just use `main`.
 
 Then let `git bisect` do it's thing
 
